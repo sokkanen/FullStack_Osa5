@@ -8,19 +8,34 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState('')
   const [user, setUser] = useState(null)
-
+  
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+    setTheBlogs()
   }, [])
+  
+  useEffect(() => {
+    const logged = window.localStorage.getItem('logged')
+    if (logged){
+      const user = JSON.parse(logged)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  }, [])
+
+  const setTheBlogs = (async () => {
+    const blogs = await blogService.getAll()
+    setBlogs(blogs)
+  })
 
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
       const user = await loginService.login({username, password})
+      window.localStorage.setItem(
+        'logged', JSON.stringify(user) 
+      )
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -28,8 +43,8 @@ const App = () => {
     } catch (exception){
       setErrorMessage('Virheellinen käyttäjätunnus tai salasana')
       setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000);
+        setErrorMessage('')
+      }, 4000);
     }
   }
 
