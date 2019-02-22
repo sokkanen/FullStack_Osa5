@@ -4,6 +4,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
 import newBlogForm from './components/NewBlogForm'
+import LoginForm from './components/LoginForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -11,6 +12,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [user, setUser] = useState(null)
+  const [loginVisible, setLoginVisible] = useState(false)
   
   useEffect(() => {
     setTheBlogs()
@@ -64,20 +66,6 @@ const App = () => {
     }, 2000);
   }
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-    <div>
-      Käyttäjätunnus: 
-      <input type="text" value={username} name="Username" onChange={({target}) => setUsername(target.value)}/>
-    </div>
-    <div>
-      Salasana: 
-      <input type="password" value={password} name="Password" onChange={({target}) => setPassword(target.value)}/>
-    </div>
-    <button type="submit">kirjaudu</button>
-  </form>
-  )
-
   const logOutForm = () => (
     <form onSubmit={logOutHandler}>
     <div>
@@ -85,6 +73,28 @@ const App = () => {
     </div>
     </form>
   )
+
+  const loginForm = () => {
+    const hide = {display: loginVisible ? 'none' : ''}
+    const show = {display: loginVisible ? '' : 'none'}
+
+    return (
+      <div>
+        <div style={hide}>
+        <button onClick={() => setLoginVisible(true)}>login</button>
+        </div>
+      <div style={show}>
+        <LoginForm 
+        handleLogin = {handleLogin} 
+        username = {username} 
+        password = {password} 
+        passwordHandler = {({target}) => setPassword(target.value)} 
+        usernameHandler = {({target}) => setUsername(target.value)}/>
+        <button onClick={() => setLoginVisible(false)}>calcel</button>
+      </div>
+      </div>
+    )
+  }
 
   if (user === null){
     return (
