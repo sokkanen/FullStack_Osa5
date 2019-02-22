@@ -18,11 +18,8 @@ const Blog = ({ blog }) => {
   }
 
   const likeHandler = () => {
-    const blogtobeupdated = {
-      id: blog.id
-    }
-    blogService.update(blog.id, blogtobeupdated)
-    blog.likes = blog.likes +1
+    blog.likes = blog.likes + 1
+    blogService.update(blog.id, blog)
   }
 
   return (

@@ -13,7 +13,6 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [user, setUser] = useState(null)
-  const [loginVisible, setLoginVisible] = useState(false)
   
   useEffect(() => {
     setTheBlogs()
@@ -32,6 +31,8 @@ const App = () => {
 
   const setTheBlogs = (async () => {
     const blogs = await blogService.getAll()
+    console.log(blogs)
+    blogs.sort((a, b) => b.likes - a.likes)
     setBlogs(blogs)
   })
 
