@@ -13,11 +13,11 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [user, setUser] = useState(null)
-  
+
   useEffect(() => {
     setTheBlogs()
   }, [])
-  
+
   useEffect(() => {
     const logged = window.localStorage.getItem('logged')
     if (logged){
@@ -38,9 +38,9 @@ const App = () => {
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
-      const user = await loginService.login({username, password})
+      const user = await loginService.login({ username, password })
       window.localStorage.setItem(
-        'logged', JSON.stringify(user) 
+        'logged', JSON.stringify(user)
       )
       blogService.setToken(user.token)
       setUser(user)
@@ -50,29 +50,29 @@ const App = () => {
       console.log(user)
       setTimeout(() => {
         setErrorMessage('')
-      }, 2000);
+      }, 2000)
     } catch (exception){
       setErrorMessage('Virheellinen käyttäjätunnus tai salasana')
       setTimeout(() => {
         setErrorMessage('')
-      }, 4000);
+      }, 4000)
     }
   }
 
   const logOutHandler = () => {
     window.localStorage.removeItem('logged')
     blogService.removeToken()
-    setErrorMessage(`Käyttäjä uloskirjautunut`)
+    setErrorMessage('Käyttäjä uloskirjautunut')
     setTimeout(() => {
       setErrorMessage('')
-    }, 2000);
+    }, 2000)
   }
 
   const logOutForm = () => (
     <form onSubmit={logOutHandler}>
-    <div>
-      <button type="submit">logout</button>
-    </div>
+      <div>
+        <button type="submit">logout</button>
+      </div>
     </form>
   )
 
@@ -82,12 +82,12 @@ const App = () => {
         <h2>blogs</h2>
         <Notification message = {errorMessage}/>
         <Toggable buttonLabel='login'>
-        <LoginForm 
-        handleLogin = {handleLogin} 
-        username = {username} 
-        password = {password} 
-        passwordHandler = {({target}) => setPassword(target.value)} 
-        usernameHandler = {({target}) => setUsername(target.value)}/>
+          <LoginForm
+            handleLogin = {handleLogin}
+            username = {username}
+            password = {password}
+            passwordHandler = {({ target }) => setPassword(target.value)}
+            usernameHandler = {({ target }) => setUsername(target.value)}/>
         </Toggable>
       </div>
     )
@@ -103,9 +103,7 @@ const App = () => {
         {newBlogForm()}
       </div>
       {blogs.map(blog =>
-        <div>
         <Blog key={blog.id} blog={blog} username={user.username}/>
-        </div>
       )}
     </div>
   )

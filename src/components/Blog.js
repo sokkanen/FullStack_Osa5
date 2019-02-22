@@ -1,14 +1,20 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, username }) => {
 
+  Blog.propTypes = {
+    blog: PropTypes.object.isRequired,
+    username: PropTypes.string.isRequired
+  }
+
   const [visible, setVisible] = useState(false)
-  const hide = {display: visible ? 'none' : ''}
-  const show = {display: visible ? '' : 'none'}
+  const hide = { display: visible ? 'none' : '' }
+  const show = { display: visible ? '' : 'none' }
 
   const toggleVis = () => {
-      setVisible(!visible)
+    setVisible(!visible)
   }
 
   const blogStyle = {
@@ -41,28 +47,28 @@ const Blog = ({ blog, username }) => {
   }
 
   return (
-  <div style={blogStyle}>
-  <div style={show} onClick={toggleVis}>
-    <div>
-    {blog.title} by {blog.author}
-    </div>
-    <div>
-    <a href={blog.url}>{blog.url}</a>
-    </div>
-    <div>
-    {blog.likes} likes <button onClick={likeHandler}>like</button>
-    </div>
-    <div>
+    <div style={blogStyle}>
+      <div style={show} onClick={toggleVis}>
+        <div>
+          {blog.title} by {blog.author}
+        </div>
+        <div>
+          <a href={blog.url}>{blog.url}</a>
+        </div>
+        <div>
+          {blog.likes} likes <button onClick={likeHandler}>like</button>
+        </div>
+        <div>
     added by {blog.user.name}
+        </div>
+        {removeButton()}
+      </div>
+      <div style={hide} onClick={toggleVis}>
+        <div>
+          {blog.title} by {blog.author}
+        </div>
+      </div>
     </div>
-    {removeButton()}
-  </div>
-  <div style={hide} onClick={toggleVis}>
-    <div>
-    {blog.title} by {blog.author}
-    </div>
-    </div>
-  </div>
   )
 }
 
