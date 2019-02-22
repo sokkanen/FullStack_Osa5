@@ -31,7 +31,6 @@ const App = () => {
 
   const setTheBlogs = (async () => {
     const blogs = await blogService.getAll()
-    console.log(blogs)
     blogs.sort((a, b) => b.likes - a.likes)
     setBlogs(blogs)
   })
@@ -48,6 +47,7 @@ const App = () => {
       setUsername('')
       setPassword('')
       setErrorMessage(`Käyttäjä ${username} kirjautunut`)
+      console.log(user)
       setTimeout(() => {
         setErrorMessage('')
       }, 2000);
@@ -104,7 +104,7 @@ const App = () => {
       </div>
       {blogs.map(blog =>
         <div>
-        <Blog key={blog.id} blog={blog}/>
+        <Blog key={blog.id} blog={blog} username={user.username}/>
         </div>
       )}
     </div>

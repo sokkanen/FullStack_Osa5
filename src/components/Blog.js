@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, username }) => {
 
   const [visible, setVisible] = useState(false)
   const hide = {display: visible ? 'none' : ''}
@@ -22,6 +22,24 @@ const Blog = ({ blog }) => {
     blogService.update(blog.id, blog)
   }
 
+  const removeHandler = () => {
+    blogService.remove(blog.id)
+  }
+
+  const removeButton = () => {
+    if (username === blog.user.username){
+      return (
+        <div>
+          <button onClick={removeHandler}>remove</button>
+        </div>
+      )
+    }
+    return (
+      <div>
+      </div>
+    )
+  }
+
   return (
   <div style={blogStyle}>
   <div style={show} onClick={toggleVis}>
@@ -37,6 +55,7 @@ const Blog = ({ blog }) => {
     <div>
     added by {blog.user.name}
     </div>
+    {removeButton()}
   </div>
   <div style={hide} onClick={toggleVis}>
     <div>
