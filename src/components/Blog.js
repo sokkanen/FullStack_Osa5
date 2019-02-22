@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import Toggable from './Toggable'
+import blogService from '../services/blogs'
 
 const Blog = ({ blog }) => {
 
@@ -17,6 +17,14 @@ const Blog = ({ blog }) => {
     borderWidth: 3
   }
 
+  const likeHandler = () => {
+    const blogtobeupdated = {
+      id: blog.id
+    }
+    blogService.update(blog.id, blogtobeupdated)
+    blog.likes = blog.likes +1
+  }
+
   return (
   <div style={blogStyle}>
   <div style={show} onClick={toggleVis}>
@@ -27,7 +35,7 @@ const Blog = ({ blog }) => {
     <a href={blog.url}>{blog.url}</a>
     </div>
     <div>
-    {blog.likes} likes <button>like</button>
+    {blog.likes} likes <button onClick={likeHandler}>like</button>
     </div>
     <div>
     added by {blog.user.name}
