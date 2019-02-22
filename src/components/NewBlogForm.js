@@ -1,54 +1,24 @@
-import React, { useState } from 'react'
-import blogService from '../services/blogs'
+import React from 'react'
 import Notification from '../components/Notification'
 
-const newBlogForm = () => {
-  const [blogname, setBlogname] = useState('')
-  const [blogauthor, setBlogauthor] = useState('')
-  const [blogurl, setBlogurl] = useState('')
-  const [message, setMessage] = useState('')
-
-  const newBlogHandler = async (event) => {
-    event.preventDefault()
-    const blog = {
-      'title': blogname,
-      'author': blogauthor,
-      'url': blogurl,
-      'likes': 0
-    }
-    try {const b = await blogService.create(blog)
-      console.log(b)
-      setMessage(`A new blog ${blog.title} by ${blog.author} added`)
-      setTimeout(() => {
-        setMessage('')
-      }, 4000)
-    } catch (error) {
-      setMessage(`Virhe uuden blogin luomisessa: ${error.message}`)
-      setTimeout(() => {
-        setMessage('')
-      }, 4000)
-    }
-  }
-
-  return (
-    <div>
-      <Notification message ={message}/>
-      <form onSubmit={newBlogHandler}>
+const NewBlogForm = ({ message, newBlogHandler, blogname, blogauthor, blogurl, blogauthorHandler, blognameHandler, blogurlHandler }) => (
+  <div>
+    <Notification message ={message}/>
+    <form onSubmit={newBlogHandler}>
+      <div>
         <div>
-          <div>
-                title: <input type="text" value={blogname} name="Blogname" onChange={({ target }) => setBlogname(target.value)}/>
-          </div>
-          <div>
-                author: <input type="text" value={blogauthor} name="Blogauthor" onChange={({ target }) => setBlogauthor(target.value)}/>
-          </div>
-          <div>
-                url: <input type="text" value={blogurl} name="BlogURL" onChange={({ target }) => setBlogurl(target.value)}/>
-          </div>
-          <button type="submit">Create</button>
+              title: <input type="text" value={blogname} name="Blogname" onChange={blognameHandler}/>
         </div>
-      </form>
-    </div>
-  )
-}
+        <div>
+              author: <input type="text" value={blogauthor} name="Blogauthor" onChange={blogauthorHandler}/>
+        </div>
+        <div>
+              url: <input type="text" value={blogurl} name="BlogURL" onChange={blogurlHandler}/>
+        </div>
+        <button type="submit">Create</button>
+      </div>
+    </form>
+  </div>
+)
 
-export default newBlogForm
+export default NewBlogForm

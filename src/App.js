@@ -3,7 +3,7 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
-import newBlogForm from './components/NewBlogForm'
+import NewBlogForm from './components/NewBlogForm'
 import LoginForm from './components/LoginForm'
 import Toggable from './components/Toggable'
 
@@ -13,6 +13,10 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [user, setUser] = useState(null)
+  const [blogname, setBlogname] = useState('')
+  const [blogauthor, setBlogauthor] = useState('')
+  const [blogurl, setBlogUrl] = useState('')
+  const [message, setMessage] = useState('')
 
   useEffect(() => {
     setTheBlogs()
@@ -76,6 +80,29 @@ const App = () => {
     </form>
   )
 
+  const newBlogHandler = async (event) => {
+    event.preventDefault()
+    const blog = {
+      'title': blogname,
+      'author': blogauthor,
+      'url': blogurl,
+      'likes': 0
+    }
+    try {
+      const b = await blogService.create(blog)
+      console.log(b)
+      setMessage(`A new blog ${blog.title} by ${blog.author} added`)
+      setTimeout(() => {
+        setMessage('')
+      }, 4000)
+    } catch (error) {
+      setMessage(`Virhe uuden blogin luomisessa: ${error.message}`)
+      setTimeout(() => {
+        setMessage('')
+      }, 4000)
+    }
+  }
+
   if (user === null){
     return (
       <div>
@@ -100,7 +127,16 @@ const App = () => {
       <div>
         <p>{user.name} logged in </p>
         {logOutForm()}
-        {newBlogForm()}
+        <NewBlogForm
+          message = {message}
+          newBlogHandler = {newBlogHandler}
+          blogname = {blogname}
+          blogauthor = {blogauthor}
+          blogurl = {blogurl}
+          blogauthorHandler = {({ target }) => setBlogauthor(target.value)}
+          blognameHandler = {({ target }) => setBlogname(target.value)}
+          blogurlHandler = {({ target }) => setBlogUrl(target.value)}
+        />
       </div>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} username={user.username}/>

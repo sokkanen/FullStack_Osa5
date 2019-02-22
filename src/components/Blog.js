@@ -29,7 +29,9 @@ const Blog = ({ blog, username }) => {
   }
 
   const removeHandler = () => {
-    blogService.remove(blog.id)
+    if (window.confirm(`Are you sure you want to remove ${blog.title} by ${blog.author} ?`)){
+      blogService.remove(blog.id)
+    }
   }
 
   const removeButton = () => {
