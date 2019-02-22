@@ -5,6 +5,7 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import newBlogForm from './components/NewBlogForm'
 import LoginForm from './components/LoginForm'
+import Toggable from './components/Toggable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -74,34 +75,19 @@ const App = () => {
     </form>
   )
 
-  const loginForm = () => {
-    const hide = {display: loginVisible ? 'none' : ''}
-    const show = {display: loginVisible ? '' : 'none'}
-
+  if (user === null){
     return (
       <div>
-        <div style={hide}>
-        <button onClick={() => setLoginVisible(true)}>login</button>
-        </div>
-      <div style={show}>
+        <h2>blogs</h2>
+        <Notification message = {errorMessage}/>
+        <Toggable buttonLabel='login'>
         <LoginForm 
         handleLogin = {handleLogin} 
         username = {username} 
         password = {password} 
         passwordHandler = {({target}) => setPassword(target.value)} 
         usernameHandler = {({target}) => setUsername(target.value)}/>
-        <button onClick={() => setLoginVisible(false)}>calcel</button>
-      </div>
-      </div>
-    )
-  }
-
-  if (user === null){
-    return (
-      <div>
-        <h2>blogs</h2>
-        <Notification message = {errorMessage}/>
-        {loginForm()}
+        </Toggable>
       </div>
     )
   }
@@ -116,7 +102,9 @@ const App = () => {
         {newBlogForm()}
       </div>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <div>
+        <Blog key={blog.id} blog={blog}/>
+        </div>
       )}
     </div>
   )
