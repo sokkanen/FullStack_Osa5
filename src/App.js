@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import newBlogForm from './components/NewBlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -21,6 +22,8 @@ const App = () => {
       const user = JSON.parse(logged)
       setUser(user)
       blogService.setToken(user.token)
+    } else {
+      setUser(null)
     }
   }, [])
 
@@ -40,12 +43,25 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+      setErrorMessage(`Käyttäjä ${username} kirjautunut`)
+      setTimeout(() => {
+        setErrorMessage('')
+      }, 2000);
     } catch (exception){
       setErrorMessage('Virheellinen käyttäjätunnus tai salasana')
       setTimeout(() => {
         setErrorMessage('')
       }, 4000);
     }
+  }
+
+  const logOutHandler = () => {
+    window.localStorage.removeItem('logged')
+    blogService.removeToken()
+    setErrorMessage(`Käyttäjä uloskirjautunut`)
+    setTimeout(() => {
+      setErrorMessage('')
+    }, 2000);
   }
 
   const loginForm = () => (
@@ -62,25 +78,33 @@ const App = () => {
   </form>
   )
 
-  const newBlogForm = () => (
+  const logOutForm = () => (
+    <form onSubmit={logOutHandler}>
     <div>
-      not implemented
+      <button type="submit">logout</button>
     </div>
+    </form>
   )
+
+  if (user === null){
+    return (
+      <div>
+        <h2>blogs</h2>
+        <Notification message = {errorMessage}/>
+        {loginForm()}
+      </div>
+    )
+  }
 
   return (
     <div>
-          <Notification message = {errorMessage}/>
-          
-          
-          {user === null ? 
-          loginForm() :
-          <div>
-            <p>{user.name} logged in </p>
-            {newBlogForm()}
-          </div>
-          }
       <h2>blogs</h2>
+      <Notification message = {errorMessage}/>
+      <div>
+        <p>{user.name} logged in </p>
+        {logOutForm()}
+        {newBlogForm()}
+      </div>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
