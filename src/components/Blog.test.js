@@ -6,19 +6,21 @@ import Blog from './Blog'
 afterEach(cleanup)
 
 test('renders content', () => {
-    const blog = {
+  const blog = {
     title: 'Himon kurvit',
     author: 'Kikka from the past',
     url: 'http://www.sukkulavenukseen.fi',
     likes: 0,
     user: {
-    name: 'Jalmarsson'
+      name: 'Jalmarsson'
     }
-    }
+  }
 
   const component = render(
     <Blog blog={blog} />
   )
+
+  component.debug()
 
   expect(component.container).toHaveTextContent(
     'Himon kurvit by Kikka from the past'
