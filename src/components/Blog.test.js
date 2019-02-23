@@ -13,7 +13,7 @@ const blog = {
   }
 }
 
-test('renders hidden content as intended', () => {
+test('renders hidden content as intended === hidden', () => {
   const component = render(
     <Blog blog={blog} username="Jalmarsson"/>
   )
@@ -31,7 +31,7 @@ test('renders hidden content as intended', () => {
   )
 })
 
-test('renders visible content as intended', () => {
+test('renders visible content as intended === visible', () => {
   const component = render(
     <Blog blog={blog} username="Jalmarsson"/>
   )
