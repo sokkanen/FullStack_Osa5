@@ -138,9 +138,11 @@ const App = () => {
           blogurlHandler = {({ target }) => setBlogUrl(target.value)}
         />
       </div>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} username={user.username}/>
-      )}
+      <div className="bloglist">
+        {blogs.map(blog =>
+          <Blog key={blog.id} blog={blog} username={user.username}/>
+        )}
+      </div>
     </div>
   )
 }

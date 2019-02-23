@@ -49,8 +49,8 @@ const Blog = ({ blog, username }) => {
   }
 
   return (
-    <div style={blogStyle}>
-      <div style={show} onClick={toggleVis}>
+    <div className="blog" style={blogStyle}>
+      <div title="visible" className="visible" style={show} onClick={toggleVis}>
         <div>
           {blog.title} by {blog.author}
         </div>
@@ -65,7 +65,7 @@ const Blog = ({ blog, username }) => {
         </div>
         {removeButton()}
       </div>
-      <div style={hide} onClick={toggleVis}>
+      <div className="hidden" style={hide} onClick={toggleVis}>
         <div>
           {blog.title} by {blog.author}
         </div>
