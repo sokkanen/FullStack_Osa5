@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
-import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
 import NewBlogForm from './components/NewBlogForm'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
-import useField from './hooks'
+import useField from './hooks/useField'
+import useResource from './hooks/useResource'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [errorMessage, setErrorMessage] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState('')
@@ -18,6 +17,7 @@ const App = () => {
   const blogurl = useField('text')
   const blogauthor = useField('text')
   const blogname = useField('text')
+  const [blogs, blogService] = useResource('/api/blogs')
 
   useEffect(() => {
     setTheBlogs()
@@ -35,9 +35,7 @@ const App = () => {
   }, [])
 
   const setTheBlogs = (async () => {
-    const blogs = await blogService.getAll()
-    blogs.sort((a, b) => b.likes - a.likes)
-    setBlogs(blogs)
+    await blogService.getAll()
   })
 
   const handleLogin = async (event) => {
