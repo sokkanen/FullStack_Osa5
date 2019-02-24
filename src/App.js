@@ -12,12 +12,12 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [errorMessage, setErrorMessage] = useState('')
   const [user, setUser] = useState(null)
-  const [blogname, setBlogname] = useState('')
-  const [blogauthor, setBlogauthor] = useState('')
-  const [blogurl, setBlogUrl] = useState('')
   const [message, setMessage] = useState('')
   const username = useField('text')
   const password = useField('password')
+  const blogurl = useField('text')
+  const blogauthor = useField('text')
+  const blogname = useField('text')
 
   useEffect(() => {
     setTheBlogs()
@@ -44,14 +44,12 @@ const App = () => {
     event.preventDefault()
     try {
       const user = await loginService.login(username.value, password.value)
-      console.log(user)
       window.localStorage.setItem(
         'logged', JSON.stringify(user)
       )
       blogService.setToken(user.token)
       setUser(user)
       setErrorMessage(`Käyttäjä ${username.value} kirjautunut`)
-      console.log(user)
       setTimeout(() => {
         setErrorMessage('')
       }, 2000)
@@ -85,15 +83,15 @@ const App = () => {
   const newBlogHandler = async (event) => {
     event.preventDefault()
     const blog = {
-      'title': blogname,
-      'author': blogauthor,
-      'url': blogurl,
+      'title': blogname.value,
+      'author': blogauthor.value,
+      'url': blogurl.value,
       'likes': 0
     }
     try {
-      const b = await blogService.create(blog)
-      console.log(b)
+      await blogService.create(blog)
       setMessage(`A new blog ${blog.title} by ${blog.author} added`)
+      setTheBlogs()
       setTimeout(() => {
         setMessage('')
       }, 4000)
@@ -106,6 +104,8 @@ const App = () => {
   }
 
   if (user === null){
+    let { reset, ...name } = username
+    let { reset: res, ...pass } = password
     return (
       <div>
         <h2>blogs</h2>
@@ -113,12 +113,15 @@ const App = () => {
         <Togglable buttonLabel='login'>
           <LoginForm
             handleLogin = {handleLogin}
-            username = {username}
-            password = {password}/>
+            username = {name}
+            password = {pass}/>
         </Togglable>
       </div>
     )
   }
+  let { reset: a, ...name } = blogname
+  let { reset: b, ...author } = blogauthor
+  let { reset: c, ...url } = blogurl
 
   return (
     <div>
@@ -130,12 +133,9 @@ const App = () => {
         <NewBlogForm
           message = {message}
           newBlogHandler = {newBlogHandler}
-          blogname = {blogname}
-          blogauthor = {blogauthor}
-          blogurl = {blogurl}
-          blogauthorHandler = {({ target }) => setBlogauthor(target.value)}
-          blognameHandler = {({ target }) => setBlogname(target.value)}
-          blogurlHandler = {({ target }) => setBlogUrl(target.value)}
+          blogname = {name}
+          blogauthor = {author}
+          blogurl = {url}
         />
       </div>
       <div className="bloglist">

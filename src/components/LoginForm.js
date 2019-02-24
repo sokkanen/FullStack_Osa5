@@ -6,11 +6,11 @@ const LoginForm = ({ handleLogin, username, password }) => {
     <form onSubmit={handleLogin}>
       <div>
         Käyttäjätunnus:
-        <input {...username}/>
+        <input { ...username }/>
       </div>
       <div>
         Salasana:
-        <input {...password}/>
+        <input { ...password }/>
       </div>
       <button type="submit">kirjaudu</button>
     </form>

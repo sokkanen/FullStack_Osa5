@@ -1,19 +1,19 @@
 import React from 'react'
 import Notification from '../components/Notification'
 
-const NewBlogForm = ({ message, newBlogHandler, blogname, blogauthor, blogurl, blogauthorHandler, blognameHandler, blogurlHandler }) => (
+const NewBlogForm = ({ message, newBlogHandler, blogname, blogauthor, blogurl }) => (
   <div>
     <Notification message ={message}/>
     <form onSubmit={newBlogHandler}>
       <div>
         <div>
-              title: <input type="text" value={blogname} name="Blogname" onChange={blognameHandler}/>
+              title: <input {...blogname}/>
         </div>
         <div>
-              author: <input type="text" value={blogauthor} name="Blogauthor" onChange={blogauthorHandler}/>
+              author: <input {...blogauthor}/>
         </div>
         <div>
-              url: <input type="text" value={blogurl} name="BlogURL" onChange={blogurlHandler}/>
+              url: <input {...blogurl}/>
         </div>
         <button type="submit">Create</button>
       </div>
