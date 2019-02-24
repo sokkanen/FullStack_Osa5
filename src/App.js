@@ -5,18 +5,19 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import NewBlogForm from './components/NewBlogForm'
 import LoginForm from './components/LoginForm'
-import Toggable from './components/Toggable'
+import Togglable from './components/Togglable'
+import useField from './hooks'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [user, setUser] = useState(null)
   const [blogname, setBlogname] = useState('')
   const [blogauthor, setBlogauthor] = useState('')
   const [blogurl, setBlogUrl] = useState('')
   const [message, setMessage] = useState('')
+  const username = useField('text')
+  const password = useField('password')
 
   useEffect(() => {
     setTheBlogs()
@@ -42,20 +43,21 @@ const App = () => {
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
-      const user = await loginService.login({ username, password })
+      const user = await loginService.login(username.value, password.value)
+      console.log(user)
       window.localStorage.setItem(
         'logged', JSON.stringify(user)
       )
       blogService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
-      setErrorMessage(`Käyttäjä ${username} kirjautunut`)
+      setErrorMessage(`Käyttäjä ${username.value} kirjautunut`)
       console.log(user)
       setTimeout(() => {
         setErrorMessage('')
       }, 2000)
     } catch (exception){
+      username.reset()
+      password.reset()
       setErrorMessage('Virheellinen käyttäjätunnus tai salasana')
       setTimeout(() => {
         setErrorMessage('')
@@ -108,14 +110,12 @@ const App = () => {
       <div>
         <h2>blogs</h2>
         <Notification message = {errorMessage}/>
-        <Toggable buttonLabel='login'>
+        <Togglable buttonLabel='login'>
           <LoginForm
             handleLogin = {handleLogin}
             username = {username}
-            password = {password}
-            passwordHandler = {({ target }) => setPassword(target.value)}
-            usernameHandler = {({ target }) => setUsername(target.value)}/>
-        </Toggable>
+            password = {password}/>
+        </Togglable>
       </div>
     )
   }

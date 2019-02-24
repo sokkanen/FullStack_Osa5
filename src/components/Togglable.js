@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const Toggable = (props) => {
+const Togglable = (props) => {
   const [visible, setVisible] = useState(false)
   const hide = { display: visible ? 'none' : '' }
   const show = { display: visible ? '' : 'none' }
@@ -10,7 +10,7 @@ const Toggable = (props) => {
     setVisible(!visible)
   }
 
-  Toggable.propTypes = {
+  Togglable.propTypes = {
     buttonLabel: PropTypes.string.isRequired
   }
 
@@ -27,4 +27,4 @@ const Toggable = (props) => {
   )
 }
 
-export default Toggable
+export default Togglable
